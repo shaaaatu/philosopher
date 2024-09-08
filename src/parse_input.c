@@ -1,3 +1,4 @@
+#include "philo.h"
 long	ft_atol(char *str)
 {
 	int		i;
@@ -12,9 +13,9 @@ long	ft_atol(char *str)
 	return (num);
 }
 
-void	parse_input(t_table table, char **argv)
+void	parse_input(t_table *table, char **argv)
 {
-	table->philo_num = ft_aol(argv[1]);
+	table->philo_num = ft_atol(argv[1]);
 	table->time_to_die = ft_atol(argv[2]) * 1e3;
 	table->time_to_eat = ft_atol(argv[3]) * 1e3;
 	table->time_to_sleep = ft_atol(argv[4]) * 1e3;
