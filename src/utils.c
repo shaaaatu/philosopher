@@ -15,12 +15,6 @@ long	gettime(char *time_code)
 		return (1337);
 }
 
-void	wait_all_threads(t_table *table)
-{
-	while (!get_bool(&table->table_mutex, &table->all_threads_ready))
-		;
-}
-
 void	precise_usleep(long usec, t_table *table)
 {
 	long	start;

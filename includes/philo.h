@@ -39,6 +39,7 @@ struct	s_table
 	long			time_to_sleep;
 	long			limit_meals_num;
 	long			start_simulation;
+	long			threads_running_num;
 	bool			end_simulation;
 	bool			all_threads_ready;
 	pthread_t		monitor;
@@ -60,5 +61,9 @@ void	wait_all_threads(t_table *table);
 long	gettime(char *time_code);
 void	precise_usleep(long usec, t_table *table);
 void	write_status(char *status, t_philo *philo);
+bool	all_threads_running(pthread_mutex_t *mutex, long *threads,
+		long philo_num);
+void	increase_long(pthread_mutex_t *mutex, long *val);
+void	*monitor_dinner(void *data);
 
 #endif
