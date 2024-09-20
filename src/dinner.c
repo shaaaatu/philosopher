@@ -1,8 +1,20 @@
 #include "philo.h"
 
-static void	thinking(t_philo *philo)
+void	thinking(t_philo *philo, bool pre_simulation)
 {
-	write_status("thinking", philo);
+	long	t_eat;
+	long	t_sleep;
+	long	t_think;
+	if (!pre_simulation)
+		write_status("thinking", philo);
+	if (philo->table->philo_num % 2 == 0)
+		return ;
+	t_eat = philo->table->time_to_eat;
+	t_sleep = philo->table->time_to_sleep;
+	t_think = t_eat * 2 - t_sleep;
+	if (t_think < 0)
+		t_think = 0;
+	precise_usleep(t_think * 0.42, philo->table);
 }
 
 void	*lone_philo(void *arg)
@@ -48,6 +60,7 @@ void	*dinner_simulation(void *data)
 			gettime("millisecond"));
 	increase_long(&philo->table->table_mutex,
 			&philo->table->threads_running_num);
+	de_synchronize_philos(philo);
 	while (!is_simulation_done(philo->table))
 	{
 		if (philo->full)
@@ -55,7 +68,7 @@ void	*dinner_simulation(void *data)
 		eating(philo);
 		write_status("sleeping", philo);
 		precise_usleep(philo->table->time_to_sleep, philo->table);
-		thinking(philo);
+		thinking(philo, false);
 	}
 	return (NULL);
 }

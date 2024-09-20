@@ -10,12 +10,7 @@ static bool	philo_died(t_philo *philo)
 	elapsed = gettime("millisecond") - get_long(&philo->philo_mutex, &philo->last_meal_time);
 	t_to_die = philo->table->time_to_die / 1e3;
 	if (elapsed > t_to_die)
-	{
-//		printf("time: %ld\nlast: %ld\n", gettime("millisecond"), get_long(&philo->philo_mutex, &philo->last_meal_time));
-//		printf("elapsed: %ld\n\
-//t_to_die:%ld\n", elapsed, t_to_die);
 		return (true);
-	}
 	return (false);
 }
 

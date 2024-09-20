@@ -1,4 +1,5 @@
 #include "philo.h"
+
 long	ft_atol(char *str)
 {
 	int		i;

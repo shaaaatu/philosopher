@@ -26,3 +26,15 @@ void	increase_long(pthread_mutex_t *mutex, long *val)
 	pthread_mutex_unlock(mutex);
 }
 
+void	de_synchronize_philos(t_philo *philo)
+{
+	if (philo->table->philo_num % 2 == 0)
+	{
+		if (philo->id % 2 == 0)
+			precise_usleep(3e4, philo->table);
+	}
+	else
+		if (philo->id % 2 == 0)
+			thinking(philo, true);
+}
+
