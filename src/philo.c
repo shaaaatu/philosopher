@@ -11,10 +11,10 @@ int	main(int argc, char **argv)
 		return (0);
 	init_data(&table);
 	start_dinner(&table);
-	int	i;
-	i = -1;
-	while (++i < table.philo_num)
-		printf("meals counter: %ld\n", table.philos[i].meals_counter);
+//	int	i;
+//	i = -1;
+//	while (++i < table.philo_num)
+//		printf("meals counter: %ld\n", table.philos[i].meals_counter);
 	clean(&table);
 //	printf("first_fork: %d\n", table.philos[0].first_fork->fork_id);
 //	printf("second_fork: %d\n", table.philos[0].second_fork->fork_id);
@@ -27,3 +27,4 @@ int	main(int argc, char **argv)
 //	printf("end simulation: %d\n", table.end_simulation);
 	return (0);
 }
+

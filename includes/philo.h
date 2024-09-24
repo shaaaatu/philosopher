@@ -8,7 +8,6 @@
 #include <pthread.h>
 #include <sys/time.h>
 #include <limits.h>
-#include "../libft/includes/libft.h"
 
 typedef struct	s_table t_table;
 
@@ -68,5 +67,7 @@ void	*monitor_dinner(void *data);
 void	thinking(t_philo *philo, bool pre_simulation);
 void	de_synchronize_philos(t_philo *philo);
 void	clean(t_table *table);
+size_t	ft_strlen(const char *str);
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
 
 #endif
