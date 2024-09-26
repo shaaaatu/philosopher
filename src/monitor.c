@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   monitor.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: luebina <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/26 18:20:11 by luebina           #+#    #+#             */
+/*   Updated: 2024/09/26 18:20:31 by luebina          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 static bool	philo_died(t_philo *philo)
@@ -7,7 +19,8 @@ static bool	philo_died(t_philo *philo)
 
 	if (get_bool(&philo->philo_mutex, &philo->full))
 		return (false);
-	elapsed = gettime("millisecond") - get_long(&philo->philo_mutex, &philo->last_meal_time);
+	elapsed = gettime("millisecond") - get_long(&philo->philo_mutex,
+			&philo->last_meal_time);
 	t_to_die = philo->table->time_to_die / 1e3;
 	if (elapsed > t_to_die)
 		return (true);
@@ -21,7 +34,7 @@ void	*monitor_dinner(void *data)
 
 	table = (t_table *)data;
 	while (!all_threads_running(&table->table_mutex,
-				&table->threads_running_num, table->philo_num))
+			&table->threads_running_num, table->philo_num))
 		;
 	while (!is_simulation_done(table))
 	{
@@ -37,4 +50,3 @@ void	*monitor_dinner(void *data)
 	}
 	return (NULL);
 }
-

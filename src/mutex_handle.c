@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   mutex_handle.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: luebina <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/26 18:20:49 by luebina           #+#    #+#             */
+/*   Updated: 2024/09/26 18:20:59 by luebina          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	set_bool(pthread_mutex_t *mutex, bool *dest, bool value)
@@ -31,11 +43,10 @@ long	get_long(pthread_mutex_t *mutex, long *value)
 	pthread_mutex_lock(mutex);
 	ret = *value;
 	pthread_mutex_unlock(mutex);
-	return(ret);
+	return (ret);
 }
 
 bool	is_simulation_done(t_table *table)
 {
 	return (get_bool(&table->table_mutex, &table->end_simulation));
 }
-

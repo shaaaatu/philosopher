@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   synchro_utils.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: luebina <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/26 18:22:17 by luebina           #+#    #+#             */
+/*   Updated: 2024/09/26 18:22:19 by luebina          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	wait_all_threads(t_table *table)
@@ -37,4 +49,3 @@ void	de_synchronize_philos(t_philo *philo)
 		if (philo->id % 2 == 0)
 			thinking(philo, true);
 }
-

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: luebina <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/26 18:22:26 by luebina           #+#    #+#             */
+/*   Updated: 2024/09/26 18:22:36 by luebina          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 size_t	ft_strlen(const char *str)
@@ -65,7 +77,7 @@ void	precise_usleep(long usec, t_table *table)
 
 void	clean(t_table *table)
 {
-	t_philo *philo;
+	t_philo	*philo;
 	int		i;
 
 	i = -1;
@@ -79,4 +91,3 @@ void	clean(t_table *table)
 	free(table->forks);
 	free(table->philos);
 }
-

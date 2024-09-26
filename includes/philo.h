@@ -1,23 +1,35 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: luebina <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/26 18:22:47 by luebina           #+#    #+#             */
+/*   Updated: 2024/09/26 18:23:39 by luebina          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdbool.h>
-#include <pthread.h>
-#include <sys/time.h>
-#include <limits.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdbool.h>
+# include <pthread.h>
+# include <sys/time.h>
+# include <limits.h>
 
-typedef struct	s_table t_table;
+typedef struct s_table	t_table;
 
-typedef struct	s_fork
+typedef struct s_fork
 {
 	pthread_mutex_t	fork;
 	int				fork_id;
 }				t_fork;
 
-typedef struct	s_philo
+typedef struct s_philo
 {
 	int				id;
 	long			meals_counter;
@@ -61,13 +73,13 @@ long	gettime(char *time_code);
 void	precise_usleep(long usec, t_table *table);
 void	write_status(char *status, t_philo *philo);
 bool	all_threads_running(pthread_mutex_t *mutex, long *threads,
-		long philo_num);
+			long philo_num);
 void	increase_long(pthread_mutex_t *mutex, long *val);
 void	*monitor_dinner(void *data);
 void	thinking(t_philo *philo, bool pre_simulation);
 void	de_synchronize_philos(t_philo *philo);
 void	clean(t_table *table);
 size_t	ft_strlen(const char *str);
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 
 #endif

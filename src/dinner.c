@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   dinner.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: luebina <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/09/26 18:19:02 by luebina           #+#    #+#             */
+/*   Updated: 2024/09/26 18:20:03 by luebina          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 void	thinking(t_philo *philo, bool pre_simulation)
@@ -5,6 +17,7 @@ void	thinking(t_philo *philo, bool pre_simulation)
 	long	t_eat;
 	long	t_sleep;
 	long	t_think;
+
 	if (!pre_simulation)
 		write_status("thinking", philo);
 	if (philo->table->philo_num % 2 == 0)
@@ -19,14 +32,14 @@ void	thinking(t_philo *philo, bool pre_simulation)
 
 void	*lone_philo(void *arg)
 {
-	t_philo *philo;
+	t_philo	*philo;
 
 	philo = (t_philo *)arg;
 	wait_all_threads(philo->table);
 	set_long(&philo->philo_mutex, &philo->last_meal_time,
-			gettime("millisecond"));
+		gettime("millisecond"));
 	increase_long(&philo->table->table_mutex,
-			&philo->table->threads_running_num);
+		&philo->table->threads_running_num);
 	write_status("take_first_fork", philo);
 	while (!is_simulation_done(philo->table))
 		usleep(200);
@@ -39,12 +52,13 @@ static void	eating(t_philo *philo)
 	write_status("take_first_fork", philo);
 	pthread_mutex_lock(&philo->second_fork->fork);
 	write_status("take_second_fork", philo);
-	set_long(&philo->philo_mutex, &philo->last_meal_time, gettime("millisecond"));
+	set_long(&philo->philo_mutex, &philo->last_meal_time,
+		gettime("millisecond"));
 	philo->meals_counter++;
 	write_status("eating", philo);
 	precise_usleep(philo->table->time_to_eat, philo->table);
 	if (philo->table->limit_meals_num > 0
-			&& philo->meals_counter == philo->table->limit_meals_num)
+		&& philo->meals_counter == philo->table->limit_meals_num)
 		set_bool(&philo->philo_mutex, &philo->full, true);
 	pthread_mutex_unlock(&philo->first_fork->fork);
 	pthread_mutex_unlock(&philo->second_fork->fork);
@@ -57,14 +71,14 @@ void	*dinner_simulation(void *data)
 	philo = (t_philo *)data;
 	wait_all_threads(philo->table);
 	set_long(&philo->philo_mutex, &philo->last_meal_time,
-			gettime("millisecond"));
+		gettime("millisecond"));
 	increase_long(&philo->table->table_mutex,
-			&philo->table->threads_running_num);
+		&philo->table->threads_running_num);
 	de_synchronize_philos(philo);
 	while (!is_simulation_done(philo->table))
 	{
 		if (philo->full)
-			break;
+			break ;
 		eating(philo);
 		write_status("sleeping", philo);
 		precise_usleep(philo->table->time_to_sleep, philo->table);
@@ -78,16 +92,14 @@ void	start_dinner(t_table *table)
 	int	i;
 
 	i = -1;
-//	if (0 == table->nbr_lit_meals)
-//		return ;
 	if (table->philo_num == 1)
 		pthread_create(&table->philos[0].thread_id, NULL,
-				lone_philo, &table->philos[0]);
+			lone_philo, &table->philos[0]);
 	else
 	{
 		while (++i < table->philo_num)
 			pthread_create(&table->philos[i].thread_id, NULL,
-					dinner_simulation, &table->philos[i]);
+				dinner_simulation, &table->philos[i]);
 	}
 	pthread_create(&table->monitor, NULL, monitor_dinner, table);
 	table->start_simulation = gettime("millisecond");
@@ -98,4 +110,3 @@ void	start_dinner(t_table *table)
 	set_bool(&table->table_mutex, &table->end_simulation, true);
 	pthread_join(table->monitor, NULL);
 }
-
