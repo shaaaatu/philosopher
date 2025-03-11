@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: luebina <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: luebina <luebina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:22:26 by luebina           #+#    #+#             */
-/*   Updated: 2025/03/11 18:44:12 by luebina          ###   ########.fr       */
+/*   Updated: 2025/03/11 22:31:37 by luebina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,21 +68,17 @@ void	print_status(t_philo *philo, char *status)
 void	clean_all(t_data *data)
 {
 	int		i;
-	char	sem_name[20];
 
 	i = 0;
 	while (i < data->philo_num)
 	{
-		create_sem_name(sem_name, i);
 		sem_close(data->philos[i].meals_sem);
-		sem_unlink(sem_name);
 		i++;
 	}
 	sem_close(data->forks_sem);
 	sem_close(data->write_sem);
 	sem_close(data->dead_sem);
-	sem_unlink(SEM_FORKS);
-	sem_unlink(SEM_WRITE);
-	sem_unlink(SEM_DEAD);
+	sem_close(data->done_sem);
+	sem_close(data->eating_sem);
 	free(data->philos);
 }

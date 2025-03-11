@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_data.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: luebina <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: luebina <luebina@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:20:37 by luebina           #+#    #+#             */
-/*   Updated: 2025/03/11 18:43:13 by luebina          ###   ########.fr       */
+/*   Updated: 2025/03/11 22:28:15 by luebina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,23 @@ static void	init_semaphores(t_data *data)
 	data->forks_sem = sem_open(SEM_FORKS, O_CREAT, 0644, data->philo_num);
 	if (data->forks_sem == SEM_FAILED)
 		exit(1);
+	sem_unlink(SEM_FORKS);
 	data->write_sem = sem_open(SEM_WRITE, O_CREAT, 0644, 1);
 	if (data->write_sem == SEM_FAILED)
 		exit(1);
+	sem_unlink(SEM_WRITE);
 	data->dead_sem = sem_open(SEM_DEAD, O_CREAT, 0644, 0);
 	if (data->dead_sem == SEM_FAILED)
 		exit(1);
+	sem_unlink(SEM_DEAD);
 	data->done_sem = sem_open(SEM_DONE, O_CREAT, 0644, 0);
 	if (data->done_sem == SEM_FAILED)
 		exit(1);
+	sem_unlink(SEM_DONE);
 	data->eating_sem = sem_open(SEM_EATING, O_CREAT, 0644, 0);
 	if (data->eating_sem == SEM_FAILED)
 		exit(1);
+	sem_unlink(SEM_EATING);
 }
 
 void	create_sem_name(char *dest, int num)
@@ -98,6 +103,7 @@ int	init_data(t_data *data, int argc, char **argv)
 		data->philos[i].meals_sem = sem_open(sem_name, O_CREAT, 0644, 1);
 		if (data->philos[i].meals_sem == SEM_FAILED)
 			return (1);
+		sem_unlink(sem_name);
 	}
 	return (0);
 }
