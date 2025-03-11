@@ -6,7 +6,7 @@
 /*   By: luebina <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:20:37 by luebina           #+#    #+#             */
-/*   Updated: 2024/09/26 18:20:43 by luebina          ###   ########.fr       */
+/*   Updated: 2025/03/11 18:43:13 by luebina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static void	init_semaphores(t_data *data)
 	sem_unlink(SEM_DEAD);
 	sem_unlink(SEM_DONE);
 	sem_unlink(SEM_EATING);
-
 	data->forks_sem = sem_open(SEM_FORKS, O_CREAT, 0644, data->philo_num);
 	if (data->forks_sem == SEM_FAILED)
 		exit(1);
@@ -94,7 +93,6 @@ int	init_data(t_data *data, int argc, char **argv)
 		data->philos[i].id = i + 1;
 		data->philos[i].meals_counter = 0;
 		data->philos[i].data = data;
-
 		create_sem_name(sem_name, i);
 		sem_unlink(sem_name);
 		data->philos[i].meals_sem = sem_open(sem_name, O_CREAT, 0644, 1);

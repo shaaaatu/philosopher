@@ -135,7 +135,7 @@ run_test 3 "Quick death case" "death" 4 200 205 205
 echo -e "\n${YELLOW}=== Meal Limit Cases ===${NC}"
 run_test 5 "All reach 7 meals" "meals_complete" 5 800 200 200 7
 run_test 5 "All reach 10 meals" "meals_complete" 4 410 200 200 10
-run_test 5 "2 philosophers 5 meals each" "meals_complete" 2 400 200 200 5
+run_test 5 "2 philosophers 5 meals each" "meals_complete" 2 410 200 200 5
 
 # 4. Deadlock potential cases
 echo -e "\n${YELLOW}=== Deadloc Potential Cases ===${NC}"
@@ -163,7 +163,7 @@ run_test 5 "Zero sleep time" "no_death" 5 810 200 0
 echo -e "\n${YELLOW}=== Normal Operation Cases ===${NC}"
 run_test 5 "Standard case" "no_death" 4 410 200 200
 run_test 5 "Odd number of philosophers" "no_death" 5 800 200 200
-run_test 5 "Minimum multiple philosophers" "no_death" 2 400 200 200
+run_test 5 "Minimum multiple philosophers" "no_death" 2 410 200 200
 
 echo -e "\n${GREEN}=== All tests completed ===${NC}"
 echo -e "\n=== All tests completed at $(date) ===" >> $LOG_FILE

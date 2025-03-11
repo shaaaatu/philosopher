@@ -6,7 +6,7 @@
 /*   By: luebina <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:21:50 by luebina           #+#    #+#             */
-/*   Updated: 2024/09/26 18:21:56 by luebina          ###   ########.fr       */
+/*   Updated: 2025/03/11 19:16:20 by luebina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	*eating_controller(void *arg)
 		eating_count = data->philo_num / 2;
 		if (eating_count == 0)
 			eating_count = 1;
-
 		i = 0;
 		while (i < eating_count)
 		{
@@ -48,19 +47,44 @@ void	*eating_controller(void *arg)
 	return (NULL);
 }
 
-void	start_dinner(t_data *data)
+void	finish_dinner(t_data *data)
 {
-	int			i;
-	int			status;
-	int			finished;
+	int	finished;
+	int	pid;
+	int	status;
+
+	finished = 0;
+	while (finished < data->philo_num)
+	{
+		pid = waitpid(-1, &status, 0);
+		if (pid > 0)
+		{
+			if (WEXITSTATUS(status) == 1)
+			{
+				kill_processes(data);
+				break ;
+			}
+			finished++;
+		}
+	}
+}
+
+void	set_thread(t_data *data)
+{
 	pthread_t	controller;
 
-	data->start_time = get_time();
 	if (pthread_create(&controller, NULL, &eating_controller, data))
 		exit(1);
 	pthread_detach(controller);
+}
+
+void	start_dinner(t_data *data)
+{
+	int	i;
 
 	i = 0;
+	data->start_time = get_time();
+	set_thread(data);
 	while (i < data->philo_num)
 	{
 		data->philos[i].pid = fork();
@@ -77,18 +101,5 @@ void	start_dinner(t_data *data)
 			usleep(50);
 		}
 	}
-	finished = 0;
-	while (finished < data->philo_num)
-	{
-		i = waitpid(-1, &status, 0);
-		if (i > 0)
-		{
-			if (WEXITSTATUS(status) == 1)
-			{
-				kill_processes(data);
-				break;
-			}
-			finished++;
-		}
-	}
-} 
+	finish_dinner(data);
+}

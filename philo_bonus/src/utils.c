@@ -6,7 +6,7 @@
 /*   By: luebina <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:22:26 by luebina           #+#    #+#             */
-/*   Updated: 2024/09/26 18:22:36 by luebina          ###   ########.fr       */
+/*   Updated: 2025/03/11 18:44:12 by luebina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,12 @@ long	ft_atol(const char *str)
 	while (*str >= '0' && *str <= '9')
 	{
 		if (result > (LONG_MAX - (*str - '0')) / 10)
-			return (sign == 1 ? LONG_MAX : LONG_MIN);
+		{
+			if (sign == 1)
+				return (LONG_MAX);
+			else
+				return (LONG_MIN);
+		}
 		result = result * 10 + (*str - '0');
 		str++;
 	}
@@ -76,10 +81,8 @@ void	clean_all(t_data *data)
 	sem_close(data->forks_sem);
 	sem_close(data->write_sem);
 	sem_close(data->dead_sem);
-
 	sem_unlink(SEM_FORKS);
 	sem_unlink(SEM_WRITE);
 	sem_unlink(SEM_DEAD);
-
 	free(data->philos);
-} 
+}

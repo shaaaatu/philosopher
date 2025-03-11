@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.c                                           :+:      :+:    :+:   */
+/*   philo.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: luebina <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 18:21:50 by luebina           #+#    #+#             */
-/*   Updated: 2024/09/26 18:21:56 by luebina          ###   ########.fr       */
+/*   Updated: 2025/03/11 18:48:36 by luebina          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	*monitor_routine(void *arg)
 		if (time_since_meal > philo->data->time_to_die)
 		{
 			sem_wait(philo->data->write_sem);
-			printf("%ld %d died\n", (get_time() - philo->data->start_time) / 1000,
+			printf("%ld %d died\n",
+				(get_time() - philo->data->start_time) / 1000,
 				philo->id);
 			sem_post(philo->data->dead_sem);
 			sem_post(philo->meals_sem);
@@ -37,44 +38,38 @@ void	*monitor_routine(void *arg)
 	return (NULL);
 }
 
+static void	perform_routine(t_philo *philo)
+{
+	sem_wait(philo->data->eating_sem);
+	sem_wait(philo->data->forks_sem);
+	print_status(philo, "has taken a fork");
+	sem_wait(philo->data->forks_sem);
+	print_status(philo, "has taken a fork");
+	sem_wait(philo->meals_sem);
+	philo->last_meal_time = get_time();
+	sem_post(philo->meals_sem);
+	print_status(philo, "is eating");
+	ft_usleep(philo->data->time_to_eat);
+	philo->meals_counter++;
+	sem_post(philo->data->forks_sem);
+	sem_post(philo->data->forks_sem);
+	if (philo->meals_counter == philo->data->limit_meals_num)
+		exit(0);
+	print_status(philo, "is sleeping");
+	ft_usleep(philo->data->time_to_sleep);
+	print_status(philo, "is thinking");
+}
+
 void	philo_routine(t_philo *philo)
 {
 	pthread_t	monitor;
 
-    philo->last_meal_time = get_time();
+	philo->last_meal_time = get_time();
 	if (pthread_create(&monitor, NULL, &monitor_routine, philo))
 		exit(1);
 	pthread_detach(monitor);
-
 	while (1)
-	{
-		// 自分の順番を待つ
-		sem_wait(philo->data->eating_sem);
-
-		// フォークを取得
-		sem_wait(philo->data->forks_sem);
-		print_status(philo, "has taken a fork");
-		sem_wait(philo->data->forks_sem);
-		print_status(philo, "has taken a fork");
-
-		sem_wait(philo->meals_sem);
-		philo->last_meal_time = get_time();
-		sem_post(philo->meals_sem);
-		print_status(philo, "is eating");
-		ft_usleep(philo->data->time_to_eat);
-		philo->meals_counter++;
-
-		// フォークを解放
-		sem_post(philo->data->forks_sem);
-		sem_post(philo->data->forks_sem);
-
-		if (philo->meals_counter == philo->data->limit_meals_num)
-			exit(0);
-
-		print_status(philo, "is sleeping");
-		ft_usleep(philo->data->time_to_sleep);
-		print_status(philo, "is thinking");
-	}
+		perform_routine(philo);
 }
 
 int	main(int argc, char **argv)
@@ -86,4 +81,4 @@ int	main(int argc, char **argv)
 	start_dinner(&data);
 	clean_all(&data);
 	return (0);
-} 
+}
